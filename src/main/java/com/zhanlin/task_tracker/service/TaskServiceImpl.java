@@ -91,7 +91,7 @@ public class TaskServiceImpl implements TaskService{
 
         Task task = findTaskByIdAndOwnerId(taskId, owner.getId());
 
-        TaskStatus newStatus = request.status()
+        TaskStatus newStatus = request.done()
                 ? TaskStatus.DONE
                 : TaskStatus.WAITING;
 
@@ -115,7 +115,7 @@ public class TaskServiceImpl implements TaskService{
 
         User assignee = userRepository.findById(request.assigneeId())
                 .orElseThrow(() ->
-                        new AssigneeNotFoundException("Assignee not found")
+                        new AssigneeNotFoundException()
                 );
 
         task.setAssignee(assignee);
@@ -140,16 +140,14 @@ public class TaskServiceImpl implements TaskService{
 
         return userRepository.findByEmail(email)
                 .orElseThrow(() ->
-                        new UserNotFoundException(
-                                "User not found: " + email
-                        )
+                        new UserNotFoundException(email)
                 );
     }
 
     private Task findTaskByIdAndOwnerId(Long taskId, Long ownerId) {
         return taskRepository.findByIdAndOwnerId(taskId, ownerId)
                 .orElseThrow(() ->
-                        new TaskNotFoundException("Task not found")
+                        new TaskNotFoundException()
                 );
     }
 }

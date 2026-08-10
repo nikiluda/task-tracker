@@ -37,5 +37,15 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(PasswordMismatchException.class)
+    public ProblemDetail handlePasswordMismatch(PasswordMismatchException exception) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
+
+    @ExceptionHandler(UserAlreadyExistException.class)
+    public ProblemDetail handleUserAlreadyExist(UserAlreadyExistException exception) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, exception.getMessage());
+    }
+
 
 }
