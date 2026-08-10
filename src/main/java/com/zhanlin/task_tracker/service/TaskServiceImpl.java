@@ -7,6 +7,9 @@ import com.zhanlin.task_tracker.dto.TaskDTO.TaskResponse;
 import com.zhanlin.task_tracker.entity.Task;
 import com.zhanlin.task_tracker.entity.TaskStatus;
 import com.zhanlin.task_tracker.entity.User;
+import com.zhanlin.task_tracker.exception.AssigneeNotFoundException;
+import com.zhanlin.task_tracker.exception.TaskNotFoundException;
+import com.zhanlin.task_tracker.exception.UserNotFoundException;
 import com.zhanlin.task_tracker.mapper.TaskMapper;
 import com.zhanlin.task_tracker.repository.TaskRepository;
 import com.zhanlin.task_tracker.repository.UserRepository;
@@ -112,7 +115,7 @@ public class TaskServiceImpl implements TaskService{
 
         User assignee = userRepository.findById(request.assigneeId())
                 .orElseThrow(() ->
-                        new RuntimeException("Assignee not found")
+                        new AssigneeNotFoundException("Assignee not found")
                 );
 
         task.setAssignee(assignee);
@@ -137,7 +140,7 @@ public class TaskServiceImpl implements TaskService{
 
         return userRepository.findByEmail(email)
                 .orElseThrow(() ->
-                        new UsernameNotFoundException(
+                        new UserNotFoundException(
                                 "User not found: " + email
                         )
                 );
@@ -146,7 +149,7 @@ public class TaskServiceImpl implements TaskService{
     private Task findTaskByIdAndOwnerId(Long taskId, Long ownerId) {
         return taskRepository.findByIdAndOwnerId(taskId, ownerId)
                 .orElseThrow(() ->
-                        new RuntimeException("Task not found")
+                        new TaskNotFoundException("Task not found")
                 );
     }
 }
