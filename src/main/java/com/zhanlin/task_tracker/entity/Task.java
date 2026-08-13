@@ -44,4 +44,9 @@ public class Task {
     @JoinColumn(name = "assignee_id")
     private User assignee;
 
+    @PrePersist
+    protected void onCreate() {
+        createdAt = Instant.now();
+    }
+
 }

@@ -1,33 +1,64 @@
 package com.zhanlin.task_tracker.security.service;
 
-import com.auth0.jwt.algorithms.Algorithm;
-import com.zhanlin.task_tracker.security.user.CustomUserDetails;
-import org.springframework.beans.factory.annotation.Value;
 
+import com.zhanlin.task_tracker.security.user.CustomUserDetails;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import javax.crypto.SecretKey;
+import java.time.Instant;
+import java.util.Date;
+
+@Service
 public class JWTServiceImpl implements JWTService {
 
-    private final Algorithm algorithm;
+    private final SecretKey key;
     private final Long expiration;
 
     public JWTServiceImpl(
-            @Value("${jwt.secret") String secret,
+            @Value("${jwt.secret}") String secret,
             @Value("${jwt.expiration}") Long expiration) {
-        this.algorithm = Algorithm.HMAC256(secret);
+        this.key = Keys.hmacShaKeyFor(secret.getBytes());
         this.expiration = expiration;
     }
 
     @Override
     public String generateToken(CustomUserDetails userDetail) {
-        return "";
+        Instant now = Instant.now();
+        Instant expiresAt = now.plusMillis(expiration);
+
+        return Jwts.builder()
+                .subject(userDetail.getUsername())
+                .issuedAt(Date.from(now))
+                .expiration(Date.from(expiresAt))
+                .signWith(key)
+                .compact();
+
     }
 
     @Override
     public String extractEmail(String token) {
-        return "";
+        return claims(token).getSubject();
     }
 
     @Override
     public boolean isTokenValid(String token) {
-        return false;
+        try {
+            return claims(token).getExpiration().after(new Date());
+        } catch (Exception exception) {
+            return false;
+        }
+    }
+
+    private Claims claims(String token) {
+        return Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 }

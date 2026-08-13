@@ -2,9 +2,5 @@ spring:
   application:
     name: task-tracker
 
-  jwt:
-    secret: ${JWT_SECRET}
-    expiration: 86400000
-
   profiles:
     default: dev

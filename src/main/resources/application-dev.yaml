@@ -14,3 +14,7 @@ spring:
     console:
       enabled: true
       path: /h2-console
+
+jwt:
+  secret: my-super-secret-key-for-task-tracker-dev-2026 #${JWT_SECRET}
+  expiration: 86400000
