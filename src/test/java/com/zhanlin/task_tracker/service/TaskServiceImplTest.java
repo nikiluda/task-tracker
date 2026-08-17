@@ -12,7 +12,6 @@ import com.zhanlin.task_tracker.exception.TaskNotFoundException;
 import com.zhanlin.task_tracker.mapper.TaskMapper;
 import com.zhanlin.task_tracker.repository.TaskRepository;
 import com.zhanlin.task_tracker.repository.UserRepository;
-import org.hibernate.query.criteria.JpaSelectCriteria;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,8 +21,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-
-import java.security.Security;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -422,7 +419,6 @@ public class TaskServiceImplTest {
 
         TaskResponse result = taskService.changeAssignee(1L, request);
 
-        // Assert
         assertThat(result).isNotNull();
         assertThat(result.assignee()).isEqualTo(2L);
 
