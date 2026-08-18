@@ -11,6 +11,7 @@ import com.zhanlin.task_tracker.service.TaskService;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -27,6 +28,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -38,7 +40,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 
 @WebMvcTest(TaskController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -70,15 +71,19 @@ class TaskControllerTest {
     );
 
     @Test
-    void getAllTasks_shouldReturnOk() throws Exception {
+    void getAllTasks_shouldReturnOk_withStatusFilter() throws Exception {
 
         Page<TaskResponse> page =
                 new PageImpl<>(List.of(sampleTask));
 
-        when(taskService.getAllTasks(any(Pageable.class)))
-                .thenReturn(page);
+        when(taskService.getAllTasks(
+                any(Pageable.class),
+                eq(TaskStatus.WAITING),
+                isNull()
+        )).thenReturn(page);
 
-        mockMvc.perform(get("/tasks"))
+        mockMvc.perform(get("/tasks")
+                        .param("status", "WAITING"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content").isArray())
                 .andExpect(jsonPath("$.content.length()").value(1))
@@ -87,7 +92,64 @@ class TaskControllerTest {
                 .andExpect(jsonPath("$.content[0].description").value("Description"))
                 .andExpect(jsonPath("$.content[0].status").value("WAITING"));
 
-        verify(taskService).getAllTasks(any(Pageable.class));
+        verify(taskService).getAllTasks(
+                any(Pageable.class),
+                eq(TaskStatus.WAITING),
+                isNull()
+        );
+    }
+
+    @Test
+    void getAllTasks_shouldReturnOk_withTitleFilter() throws Exception {
+
+        Page<TaskResponse> page =
+                new PageImpl<>(List.of(sampleTask));
+
+        when(taskService.getAllTasks(
+                any(Pageable.class),
+                isNull(),
+                eq("java")
+        )).thenReturn(page);
+
+        mockMvc.perform(get("/tasks")
+                        .param("title", "java"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content").isArray())
+                .andExpect(jsonPath("$.content.length()").value(1))
+                .andExpect(jsonPath("$.content[0].id").value(1))
+                .andExpect(jsonPath("$.content[0].title").value("Sample"));
+
+        verify(taskService).getAllTasks(
+                any(Pageable.class),
+                isNull(),
+                eq("java")
+        );
+    }
+
+    @Test
+    void getAllTasks_shouldReturnOk_withoutFilters() throws Exception {
+
+        Page<TaskResponse> page =
+                new PageImpl<>(List.of(sampleTask));
+
+        when(taskService.getAllTasks(
+                any(Pageable.class),
+                isNull(),
+                isNull()
+        )).thenReturn(page);
+
+        mockMvc.perform(get("/tasks"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content").isArray())
+                .andExpect(jsonPath("$.content.length()").value(1))
+                .andExpect(jsonPath("$.content[0].id").value(1))
+                .andExpect(jsonPath("$.content[0].title").value("Sample"));
+
+        verify(taskService).getAllTasks(
+                any(Pageable.class),
+                isNull(),
+                isNull()
+        );
     }
 
     @Test
