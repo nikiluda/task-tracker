@@ -13,13 +13,13 @@ import com.zhanlin.task_tracker.exception.UserNotFoundException;
 import com.zhanlin.task_tracker.mapper.TaskMapper;
 import com.zhanlin.task_tracker.repository.TaskRepository;
 import com.zhanlin.task_tracker.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.util.List;
 
 //Сделать наследование от интерфейса и так же добавить кастомные исключения
 
@@ -53,13 +53,11 @@ public class TaskServiceImpl implements TaskService{
 
     @Transactional(readOnly = true)
     @Override
-    public List<TaskResponse> getAllTasks() {
+    public Page<TaskResponse> getAllTasks(Pageable pageable) {
         User owner = getCurrentUser();
 
-        return taskRepository.findAllByOwnerId(owner.getId())
-                .stream()
-                .map(taskMapper::toResponse)
-                .toList();
+        return taskRepository.findAllByOwnerId(owner.getId(), pageable)
+                .map(taskMapper::toResponse);
     }
 
     @Transactional(readOnly = true)

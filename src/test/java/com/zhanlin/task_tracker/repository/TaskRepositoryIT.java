@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -98,12 +100,18 @@ class TaskRepositoryIT {
         taskRepository.flush();
         entityManager.clear();
 
-        List<Task> tasks = taskRepository.findAllByOwnerId(owner.getId());
+        Page<Task> tasks = taskRepository.findAllByOwnerId(
+                owner.getId(),
+                PageRequest.of(0, 10)
+        );
 
 
-        assertThat(tasks)
+        assertThat(tasks.getContent())
                 .hasSize(2)
                 .allMatch(task -> task.getOwner().getId().equals(owner.getId()));
+
+        assertThat(tasks.getTotalElements())
+                .isEqualTo(2);
     }
 
     @Test
