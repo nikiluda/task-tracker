@@ -13,13 +13,18 @@ import com.zhanlin.task_tracker.exception.UserNotFoundException;
 import com.zhanlin.task_tracker.mapper.TaskMapper;
 import com.zhanlin.task_tracker.repository.TaskRepository;
 import com.zhanlin.task_tracker.repository.UserRepository;
+import com.zhanlin.task_tracker.specification.TaskSpecification;
+import com.zhanlin.task_tracker.validation.TaskSortValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+
+
 
 //Сделать наследование от интерфейса и так же добавить кастомные исключения
 
@@ -30,15 +35,17 @@ public class TaskServiceImpl implements TaskService{
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
     private final UserRepository userRepository;
+    private final TaskSortValidator taskSortValidator;
 
     public TaskServiceImpl(
             TaskRepository taskRepository,
             TaskMapper taskMapper,
-            UserRepository userRepository
+            UserRepository userRepository, TaskSortValidator taskSortValidator
     ) {
         this.taskRepository = taskRepository;
         this.taskMapper = taskMapper;
         this.userRepository = userRepository;
+        this.taskSortValidator = taskSortValidator;
     }
     @Override
     public TaskResponse createTask(TaskRequest request) {
@@ -53,10 +60,27 @@ public class TaskServiceImpl implements TaskService{
 
     @Transactional(readOnly = true)
     @Override
-    public Page<TaskResponse> getAllTasks(Pageable pageable) {
+    public Page<TaskResponse> getAllTasks(Pageable pageable, TaskStatus status, String title) {
+        taskSortValidator.validate(pageable);
+
         User owner = getCurrentUser();
 
-        return taskRepository.findAllByOwnerId(owner.getId(), pageable)
+        Specification<Task> specification =
+                TaskSpecification.belongsToOwner(owner.getId());
+
+        if (status != null) {
+            specification = specification.and(
+                    TaskSpecification.hasStatus(status)
+            );
+        }
+
+        if (title != null) {
+            specification = specification.and(
+                    TaskSpecification.titleContains(title)
+            );
+        }
+
+        return taskRepository.findAll(specification, pageable)
                 .map(taskMapper::toResponse);
     }
 

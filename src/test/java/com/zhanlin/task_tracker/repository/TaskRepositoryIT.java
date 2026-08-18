@@ -3,6 +3,7 @@ package com.zhanlin.task_tracker.repository;
 import com.zhanlin.task_tracker.entity.Task;
 import com.zhanlin.task_tracker.entity.TaskStatus;
 import com.zhanlin.task_tracker.entity.User;
+import com.zhanlin.task_tracker.specification.TaskSpecification;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,6 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -61,8 +60,7 @@ class TaskRepositoryIT {
     private EntityManager entityManager;
 
     @Test
-    void findAllByOwnerId_shouldReturnOwnerTasks() {
-
+    void findAll_shouldReturnOwnerTasks() {
 
         User owner = new User();
         owner.setEmail("owner@example.com");
@@ -100,23 +98,65 @@ class TaskRepositoryIT {
         taskRepository.flush();
         entityManager.clear();
 
-        Page<Task> tasks = taskRepository.findAllByOwnerId(
-                owner.getId(),
+        Page<Task> tasks = taskRepository.findAll(
+                TaskSpecification.belongsToOwner(owner.getId()),
                 PageRequest.of(0, 10)
         );
 
-
         assertThat(tasks.getContent())
                 .hasSize(2)
-                .allMatch(task -> task.getOwner().getId().equals(owner.getId()));
+                .allMatch(task ->
+                        task.getOwner().getId().equals(owner.getId()));
 
         assertThat(tasks.getTotalElements())
                 .isEqualTo(2);
     }
 
     @Test
-    void findByIdAndOwnerId_shouldReturnTask_whenTaskBelongsToOwner() {
+    void findAll_shouldFilterByOwnerAndStatus() {
 
+        User owner = new User();
+        owner.setEmail("owner@example.com");
+        owner.setPassword("password");
+
+        userRepository.save(owner);
+
+        Task waitingTask = new Task();
+        waitingTask.setTitle("Waiting task");
+        waitingTask.setDescription("Waiting description");
+        waitingTask.setStatus(TaskStatus.WAITING);
+        waitingTask.setOwner(owner);
+
+        Task doneTask = new Task();
+        doneTask.setTitle("Done task");
+        doneTask.setDescription("Done description");
+        doneTask.setStatus(TaskStatus.DONE);
+        doneTask.setOwner(owner);
+
+        taskRepository.save(waitingTask);
+        taskRepository.save(doneTask);
+
+        taskRepository.flush();
+        entityManager.clear();
+
+        Page<Task> tasks = taskRepository.findAll(
+                TaskSpecification.belongsToOwner(owner.getId())
+                        .and(TaskSpecification.hasStatus(TaskStatus.WAITING)),
+                PageRequest.of(0, 10)
+        );
+
+        assertThat(tasks.getContent())
+                .hasSize(1);
+
+        assertThat(tasks.getContent().getFirst().getStatus())
+                .isEqualTo(TaskStatus.WAITING);
+
+        assertThat(tasks.getTotalElements())
+                .isEqualTo(1);
+    }
+
+    @Test
+    void findByIdAndOwnerId_shouldReturnTask_whenTaskBelongsToOwner() {
 
         User owner = new User();
         owner.setEmail("owner@example.com");
@@ -133,10 +173,8 @@ class TaskRepositoryIT {
         taskRepository.saveAndFlush(task);
         entityManager.clear();
 
-
         var foundTask = taskRepository
                 .findByIdAndOwnerId(task.getId(), owner.getId());
-
 
         assertThat(foundTask)
                 .isPresent();
@@ -151,7 +189,6 @@ class TaskRepositoryIT {
     @Test
     void findByIdAndOwnerId_shouldReturnEmpty_whenTaskBelongsToAnotherOwner() {
 
-        // Arrange
         User owner = new User();
         owner.setEmail("owner@example.com");
         owner.setPassword("password");
@@ -172,10 +209,8 @@ class TaskRepositoryIT {
         taskRepository.saveAndFlush(task);
         entityManager.clear();
 
-
         var foundTask = taskRepository
                 .findByIdAndOwnerId(task.getId(), anotherOwner.getId());
-
 
         assertThat(foundTask)
                 .isEmpty();

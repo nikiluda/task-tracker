@@ -4,6 +4,7 @@ import com.zhanlin.task_tracker.dto.TaskDTO.AssigneeRequest;
 import com.zhanlin.task_tracker.dto.TaskDTO.StatusRequest;
 import com.zhanlin.task_tracker.dto.TaskDTO.TaskRequest;
 import com.zhanlin.task_tracker.dto.TaskDTO.TaskResponse;
+import com.zhanlin.task_tracker.entity.TaskStatus;
 import com.zhanlin.task_tracker.service.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,11 @@ public class TaskController {
 
 
     @GetMapping
-    public ResponseEntity<Page<TaskResponse>> getAllTasks(Pageable pageable) {
-        return ResponseEntity.ok(taskService.getAllTasks(pageable));
+    public ResponseEntity<Page<TaskResponse>> getAllTasks(Pageable pageable, @RequestParam(required = false) TaskStatus status,
+                                                          @RequestParam(required = false) String title) {
+        return ResponseEntity.ok(
+                taskService.getAllTasks(pageable, status, title)
+        );
     }
 
     @GetMapping("/{id}")
