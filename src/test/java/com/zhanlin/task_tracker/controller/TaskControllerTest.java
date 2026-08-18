@@ -12,6 +12,9 @@ import com.zhanlin.task_tracker.service.TaskService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -69,19 +72,22 @@ class TaskControllerTest {
     @Test
     void getAllTasks_shouldReturnOk() throws Exception {
 
-        when(taskService.getAllTasks())
-                .thenReturn(List.of(sampleTask));
+        Page<TaskResponse> page =
+                new PageImpl<>(List.of(sampleTask));
+
+        when(taskService.getAllTasks(any(Pageable.class)))
+                .thenReturn(page);
 
         mockMvc.perform(get("/tasks"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].id").value(1))
-                .andExpect(jsonPath("$[0].title").value("Sample"))
-                .andExpect(jsonPath("$[0].description").value("Description"))
-                .andExpect(jsonPath("$[0].status").value("WAITING"));
+                .andExpect(jsonPath("$.content").isArray())
+                .andExpect(jsonPath("$.content.length()").value(1))
+                .andExpect(jsonPath("$.content[0].id").value(1))
+                .andExpect(jsonPath("$.content[0].title").value("Sample"))
+                .andExpect(jsonPath("$.content[0].description").value("Description"))
+                .andExpect(jsonPath("$.content[0].status").value("WAITING"));
 
-        verify(taskService).getAllTasks();
+        verify(taskService).getAllTasks(any(Pageable.class));
     }
 
     @Test
