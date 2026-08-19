@@ -1,4 +1,6 @@
 package com.zhanlin.task_tracker.statistics.api.response;
 
-public class CompletionStatistics {
+public record CompletionStatistics(
+        long averageCompletionTimeSeconds
+) {
 }

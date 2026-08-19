@@ -9,7 +9,6 @@ import com.zhanlin.task_tracker.entity.TaskStatus;
 import com.zhanlin.task_tracker.entity.User;
 import com.zhanlin.task_tracker.exception.AssigneeNotFoundException;
 import com.zhanlin.task_tracker.exception.TaskNotFoundException;
-import com.zhanlin.task_tracker.exception.UserNotFoundException;
 import com.zhanlin.task_tracker.mapper.TaskMapper;
 import com.zhanlin.task_tracker.repository.TaskRepository;
 import com.zhanlin.task_tracker.repository.UserRepository;
@@ -18,7 +17,6 @@ import com.zhanlin.task_tracker.validation.TaskSortValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,20 +34,22 @@ public class TaskServiceImpl implements TaskService{
     private final TaskMapper taskMapper;
     private final UserRepository userRepository;
     private final TaskSortValidator taskSortValidator;
+    private final CurrentUserService currentUserService;
 
     public TaskServiceImpl(
             TaskRepository taskRepository,
             TaskMapper taskMapper,
-            UserRepository userRepository, TaskSortValidator taskSortValidator
+            UserRepository userRepository, TaskSortValidator taskSortValidator, CurrentUserService currentUserService
     ) {
         this.taskRepository = taskRepository;
         this.taskMapper = taskMapper;
         this.userRepository = userRepository;
         this.taskSortValidator = taskSortValidator;
+        this.currentUserService = currentUserService;
     }
     @Override
     public TaskResponse createTask(TaskRequest request) {
-        User owner = getCurrentUser();
+        User owner = currentUserService.getCurrentUser();
 
         Task task = taskMapper.toEntity(request, owner);
 
@@ -63,7 +63,7 @@ public class TaskServiceImpl implements TaskService{
     public Page<TaskResponse> getAllTasks(Pageable pageable, TaskStatus status, String title) {
         taskSortValidator.validate(pageable);
 
-        User owner = getCurrentUser();
+        User owner = currentUserService.getCurrentUser();
 
         Specification<Task> specification =
                 TaskSpecification.belongsToOwner(owner.getId());
@@ -87,7 +87,7 @@ public class TaskServiceImpl implements TaskService{
     @Transactional(readOnly = true)
     @Override
     public TaskResponse getOneTask(Long taskId) {
-        User owner = getCurrentUser();
+        User owner = currentUserService.getCurrentUser();
 
         Task task = findTaskByIdAndOwnerId(taskId, owner.getId());
 
@@ -97,7 +97,7 @@ public class TaskServiceImpl implements TaskService{
     @Override
     public TaskResponse updateTask(Long taskId, TaskRequest request
     ) {
-        User owner = getCurrentUser();
+        User owner = currentUserService.getCurrentUser();
 
         Task task = findTaskByIdAndOwnerId(taskId, owner.getId());
 
@@ -109,7 +109,7 @@ public class TaskServiceImpl implements TaskService{
     @Override
     public TaskResponse updateStatus(Long taskId, StatusRequest request
     ) {
-        User owner = getCurrentUser();
+        User owner = currentUserService.getCurrentUser();
 
         Task task = findTaskByIdAndOwnerId(taskId, owner.getId());
 
@@ -131,7 +131,7 @@ public class TaskServiceImpl implements TaskService{
     @Override
     public TaskResponse changeAssignee(Long taskId, AssigneeRequest request
     ) {
-        User owner = getCurrentUser();
+        User owner = currentUserService.getCurrentUser();
 
         Task task = findTaskByIdAndOwnerId(taskId, owner.getId());
 
@@ -147,24 +147,14 @@ public class TaskServiceImpl implements TaskService{
 
     @Override
     public void deleteTask(Long taskId) {
-        User owner = getCurrentUser();
+        User owner = currentUserService.getCurrentUser();
 
         Task task = findTaskByIdAndOwnerId(taskId, owner.getId());
 
         taskRepository.delete(task);
     }
 
-    private User getCurrentUser() {
-        String email = SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getName();
 
-        return userRepository.findByEmail(email)
-                .orElseThrow(() ->
-                        new UserNotFoundException(email)
-                );
-    }
 
     private Task findTaskByIdAndOwnerId(Long taskId, Long ownerId) {
         return taskRepository.findByIdAndOwnerId(taskId, ownerId)
