@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005-create-admin
+      author: zhanlin
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: email
+                  value: "admin@tasktracker.local"
+              - column:
+                  name: password
+                  value: "$2a$12$lVuGj7oOpcCt9.eXrqKtqug/0f.MYte1Pm8/nXeyJdI3enPBkVRQu"
+              - column:
+                  name: role
+                  value: "ADMIN"

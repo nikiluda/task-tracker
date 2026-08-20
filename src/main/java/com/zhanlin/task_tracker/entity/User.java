@@ -34,6 +34,11 @@ public class User {
     private List<Task> assignedTasks;
 
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 30)
+    private UserRole role;
+
+
 
 
 }

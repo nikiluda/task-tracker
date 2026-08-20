@@ -5,6 +5,7 @@ import com.zhanlin.task_tracker.dto.AuthAndLoginDTO.AuthResponse;
 import com.zhanlin.task_tracker.dto.AuthAndLoginDTO.LoginRequest;
 import com.zhanlin.task_tracker.dto.UserDTO.RegisterUserRequest;
 import com.zhanlin.task_tracker.entity.User;
+import com.zhanlin.task_tracker.entity.UserRole;
 import com.zhanlin.task_tracker.exception.PasswordMismatchException;
 import com.zhanlin.task_tracker.exception.UserAlreadyExistException;
 import com.zhanlin.task_tracker.mapper.UserMapper;
@@ -49,6 +50,7 @@ public class AuthServiceImpl implements AuthService{
 
         User user = userMapper.toEntity(request);
         user.setPassword(passwordEncoder.encode(request.password()));
+        user.setRole(UserRole.USER);
         User savedUser = userRepository.save(user);
 
         CustomUserDetails userDetails = new CustomUserDetails(savedUser);
