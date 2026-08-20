@@ -7,3 +7,9 @@ databaseChangeLog:
 
   - include:
       file: db/changelog/changes/003-add-task-foreign-keys.yaml
+
+  - include:
+      file: db/changelog/changes/004-add-user-role.yaml
+
+  - include:
+      file: db/changelog/changes/005-create-admin.yaml

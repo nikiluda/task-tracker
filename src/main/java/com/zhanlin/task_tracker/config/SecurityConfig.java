@@ -27,11 +27,16 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+
                         .requestMatchers("/auth/register", "/auth/login").permitAll()
-                        .requestMatchers(
-                                "/actuator/health",
-                                "/actuator/prometheus"
-                        ).permitAll()
+
+                        .requestMatchers("/tasks.**", "/statistics", "/me").hasRole("USER")
+
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+
+                        .requestMatchers("/actuator/health").permitAll()
+
+                        .requestMatchers("/actuator/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
