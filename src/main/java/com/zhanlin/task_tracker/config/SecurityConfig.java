@@ -30,6 +30,8 @@ public class SecurityConfig {
 
                         .requestMatchers("/auth/register", "/auth/login").permitAll()
 
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+
                         .requestMatchers("/tasks.**", "/statistics", "/me").hasRole("USER")
 
                         .requestMatchers("/admin/**").hasRole("ADMIN")
