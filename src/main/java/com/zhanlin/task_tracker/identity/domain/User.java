@@ -1,7 +1,7 @@
 package com.zhanlin.task_tracker.identity.domain;
 
 
-import com.zhanlin.task_tracker.entity.Task;
+import com.zhanlin.task_tracker.task.domain.Task;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

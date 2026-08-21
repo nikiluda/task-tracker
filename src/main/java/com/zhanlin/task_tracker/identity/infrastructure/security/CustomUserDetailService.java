@@ -1,7 +1,6 @@
 package com.zhanlin.task_tracker.identity.infrastructure.security;
 
 import com.zhanlin.task_tracker.identity.infrastructure.persistence.UserRepository;
-import com.zhanlin.task_tracker.security.user.CustomUserDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

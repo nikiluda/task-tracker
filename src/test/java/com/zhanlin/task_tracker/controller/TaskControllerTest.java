@@ -1,13 +1,14 @@
 package com.zhanlin.task_tracker.controller;
 
-import com.zhanlin.task_tracker.dto.TaskDTO.AssigneeRequest;
-import com.zhanlin.task_tracker.dto.TaskDTO.StatusRequest;
-import com.zhanlin.task_tracker.dto.TaskDTO.TaskRequest;
-import com.zhanlin.task_tracker.dto.TaskDTO.TaskResponse;
-import com.zhanlin.task_tracker.entity.TaskStatus;
+import com.zhanlin.task_tracker.task.api.rest.dto.AssigneeRequest;
+import com.zhanlin.task_tracker.task.api.rest.dto.StatusRequest;
+import com.zhanlin.task_tracker.task.api.rest.dto.TaskRequest;
+import com.zhanlin.task_tracker.task.api.rest.dto.TaskResponse;
+import com.zhanlin.task_tracker.task.api.rest.TaskController;
+import com.zhanlin.task_tracker.task.domain.TaskStatus;
 import com.zhanlin.task_tracker.identity.infrastructure.security.CustomUserDetailService;
 import com.zhanlin.task_tracker.identity.infrastructure.security.JWTService;
-import com.zhanlin.task_tracker.service.TaskService;
+import com.zhanlin.task_tracker.task.application.service.TaskService;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

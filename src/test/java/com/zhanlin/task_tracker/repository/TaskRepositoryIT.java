@@ -1,10 +1,11 @@
 package com.zhanlin.task_tracker.repository;
 
-import com.zhanlin.task_tracker.entity.Task;
-import com.zhanlin.task_tracker.entity.TaskStatus;
+import com.zhanlin.task_tracker.task.Infrastructure.persistence.TaskRepository;
+import com.zhanlin.task_tracker.task.domain.Task;
+import com.zhanlin.task_tracker.task.domain.TaskStatus;
 import com.zhanlin.task_tracker.identity.domain.User;
 import com.zhanlin.task_tracker.identity.infrastructure.persistence.UserRepository;
-import com.zhanlin.task_tracker.specification.TaskSpecification;
+import com.zhanlin.task_tracker.task.Infrastructure.persistence.TaskSpecification;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,15 +1,16 @@
 package com.zhanlin.task_tracker.service;
 
-import com.zhanlin.task_tracker.dto.TaskDTO.AssigneeRequest;
-import com.zhanlin.task_tracker.dto.TaskDTO.StatusRequest;
-import com.zhanlin.task_tracker.dto.TaskDTO.TaskRequest;
-import com.zhanlin.task_tracker.dto.TaskDTO.TaskResponse;
-import com.zhanlin.task_tracker.entity.Task;
-import com.zhanlin.task_tracker.entity.TaskStatus;
+import com.zhanlin.task_tracker.task.api.rest.dto.AssigneeRequest;
+import com.zhanlin.task_tracker.task.api.rest.dto.StatusRequest;
+import com.zhanlin.task_tracker.task.api.rest.dto.TaskRequest;
+import com.zhanlin.task_tracker.task.api.rest.dto.TaskResponse;
+import com.zhanlin.task_tracker.task.application.service.TaskServiceImpl;
+import com.zhanlin.task_tracker.task.domain.Task;
+import com.zhanlin.task_tracker.task.domain.TaskStatus;
 import com.zhanlin.task_tracker.identity.domain.User;
-import com.zhanlin.task_tracker.exception.TaskNotFoundException;
-import com.zhanlin.task_tracker.mapper.TaskMapper;
-import com.zhanlin.task_tracker.repository.TaskRepository;
+import com.zhanlin.task_tracker.task.domain.exception.TaskNotFoundException;
+import com.zhanlin.task_tracker.task.application.service.TaskMapper;
+import com.zhanlin.task_tracker.task.Infrastructure.persistence.TaskRepository;
 import com.zhanlin.task_tracker.identity.infrastructure.persistence.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

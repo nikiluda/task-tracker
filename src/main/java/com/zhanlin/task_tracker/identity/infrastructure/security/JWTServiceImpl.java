@@ -1,7 +1,6 @@
 package com.zhanlin.task_tracker.identity.infrastructure.security;
 
 
-import com.zhanlin.task_tracker.security.user.CustomUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
