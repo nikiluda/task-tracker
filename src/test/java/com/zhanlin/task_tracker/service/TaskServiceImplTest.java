@@ -10,7 +10,7 @@ import com.zhanlin.task_tracker.task.domain.TaskStatus;
 import com.zhanlin.task_tracker.identity.domain.User;
 import com.zhanlin.task_tracker.task.domain.exception.TaskNotFoundException;
 import com.zhanlin.task_tracker.task.application.service.TaskMapper;
-import com.zhanlin.task_tracker.task.Infrastructure.persistence.TaskRepository;
+import com.zhanlin.task_tracker.task.Infrastructure.persistence.JpaTaskRepository;
 import com.zhanlin.task_tracker.identity.infrastructure.persistence.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +38,7 @@ import static org.mockito.Mockito.*;
 public class TaskServiceImplTest {
 
     @Mock
-    private TaskRepository taskRepository;
+    private JpaTaskRepository taskRepository;
 
     @Mock
     private TaskMapper taskMapper;

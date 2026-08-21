@@ -1,6 +1,6 @@
 package com.zhanlin.task_tracker.repository;
 
-import com.zhanlin.task_tracker.task.Infrastructure.persistence.TaskRepository;
+import com.zhanlin.task_tracker.task.Infrastructure.persistence.JpaTaskRepository;
 import com.zhanlin.task_tracker.task.domain.Task;
 import com.zhanlin.task_tracker.task.domain.TaskStatus;
 import com.zhanlin.task_tracker.identity.domain.User;
@@ -53,7 +53,7 @@ class TaskRepositoryIT {
     }
 
     @Autowired
-    private TaskRepository taskRepository;
+    private JpaTaskRepository taskRepository;
 
     @Autowired
     private UserRepository userRepository;

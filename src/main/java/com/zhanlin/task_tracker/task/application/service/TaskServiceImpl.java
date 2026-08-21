@@ -5,12 +5,13 @@ import com.zhanlin.task_tracker.task.api.rest.dto.AssigneeRequest;
 import com.zhanlin.task_tracker.task.api.rest.dto.TaskRequest;
 import com.zhanlin.task_tracker.task.api.rest.dto.StatusRequest;
 import com.zhanlin.task_tracker.task.api.rest.dto.TaskResponse;
+import com.zhanlin.task_tracker.task.application.port.out.TaskRepositoryPort;
 import com.zhanlin.task_tracker.task.domain.Task;
 import com.zhanlin.task_tracker.task.domain.TaskStatus;
 import com.zhanlin.task_tracker.identity.domain.User;
 import com.zhanlin.task_tracker.task.domain.exception.AssigneeNotFoundException;
 import com.zhanlin.task_tracker.task.domain.exception.TaskNotFoundException;
-import com.zhanlin.task_tracker.task.Infrastructure.persistence.TaskRepository;
+import com.zhanlin.task_tracker.task.Infrastructure.persistence.JpaTaskRepository;
 import com.zhanlin.task_tracker.identity.infrastructure.persistence.UserRepository;
 import com.zhanlin.task_tracker.task.Infrastructure.persistence.TaskSpecification;
 import org.springframework.data.domain.Page;
@@ -24,23 +25,25 @@ import java.time.Instant;
 
 
 //Сделать наследование от интерфейса и так же добавить кастомные исключения
-
+//порты и адаптеры правильно сделать
 @Service
 @Transactional
 public class TaskServiceImpl implements TaskService {
 
-    private final TaskRepository taskRepository;
+    private final TaskRepositoryPort testtaskRepository;    //Это будущий порт, далее связь с интерфейсо Spring Data будет не прямая
+    private final JpaTaskRepository taskRepository;
     private final TaskMapper taskMapper;
     private final UserRepository userRepository;
     private final TaskSortValidator taskSortValidator;
     private final CurrentUserService currentUserService;
 
     public TaskServiceImpl(
-            TaskRepository taskRepository,
+            TaskRepositoryPort testtaskRepository, JpaTaskRepository taskRepository,
             TaskMapper taskMapper,
             UserRepository userRepository, TaskSortValidator taskSortValidator, CurrentUserService currentUserService
     ) {
         this.taskRepository = taskRepository;
+        this.testtaskRepository = testtaskRepository;
         this.taskMapper = taskMapper;
         this.userRepository = userRepository;
         this.taskSortValidator = taskSortValidator;
