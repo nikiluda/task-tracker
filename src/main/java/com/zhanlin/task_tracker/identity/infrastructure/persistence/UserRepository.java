@@ -1,6 +1,6 @@
-package com.zhanlin.task_tracker.repository;
+package com.zhanlin.task_tracker.identity.infrastructure.persistence;
 
-import com.zhanlin.task_tracker.entity.User;
+import com.zhanlin.task_tracker.identity.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

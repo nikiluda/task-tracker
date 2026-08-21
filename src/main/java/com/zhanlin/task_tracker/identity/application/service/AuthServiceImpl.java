@@ -1,20 +1,18 @@
-package com.zhanlin.task_tracker.service;
+package com.zhanlin.task_tracker.identity.application.service;
 
 
-import com.zhanlin.task_tracker.dto.AuthAndLoginDTO.AuthResponse;
-import com.zhanlin.task_tracker.dto.AuthAndLoginDTO.LoginRequest;
-import com.zhanlin.task_tracker.dto.UserDTO.RegisterUserRequest;
-import com.zhanlin.task_tracker.entity.User;
-import com.zhanlin.task_tracker.entity.UserRole;
+import com.zhanlin.task_tracker.identity.api.rest.dto.AuthResponse;
+import com.zhanlin.task_tracker.identity.api.rest.dto.LoginRequest;
+import com.zhanlin.task_tracker.identity.api.rest.dto.RegisterUserRequest;
+import com.zhanlin.task_tracker.identity.domain.User;
+import com.zhanlin.task_tracker.identity.domain.UserRole;
 import com.zhanlin.task_tracker.exception.PasswordMismatchException;
 import com.zhanlin.task_tracker.exception.UserAlreadyExistException;
-import com.zhanlin.task_tracker.mapper.UserMapper;
-import com.zhanlin.task_tracker.repository.UserRepository;
-import com.zhanlin.task_tracker.security.service.JWTService;
+import com.zhanlin.task_tracker.identity.infrastructure.persistence.UserRepository;
+import com.zhanlin.task_tracker.identity.infrastructure.security.JWTService;
 import com.zhanlin.task_tracker.security.user.CustomUserDetails;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class AuthServiceImpl implements AuthService{
+public class AuthServiceImpl implements AuthService {
 
 
     private final UserRepository userRepository;

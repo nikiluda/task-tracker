@@ -1,13 +1,13 @@
 package com.zhanlin.task_tracker.controller;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zhanlin.task_tracker.dto.AuthAndLoginDTO.AuthResponse;
-import com.zhanlin.task_tracker.dto.AuthAndLoginDTO.LoginRequest;
-import com.zhanlin.task_tracker.dto.UserDTO.RegisterUserRequest;
-import com.zhanlin.task_tracker.security.service.CustomUserDetailService;
-import com.zhanlin.task_tracker.security.service.JWTService;
-import com.zhanlin.task_tracker.service.AuthService;
+import com.zhanlin.task_tracker.identity.api.rest.dto.AuthResponse;
+import com.zhanlin.task_tracker.identity.api.rest.dto.LoginRequest;
+import com.zhanlin.task_tracker.identity.api.rest.dto.RegisterUserRequest;
+import com.zhanlin.task_tracker.identity.api.rest.AuthController;
+import com.zhanlin.task_tracker.identity.infrastructure.security.CustomUserDetailService;
+import com.zhanlin.task_tracker.identity.infrastructure.security.JWTService;
+import com.zhanlin.task_tracker.identity.application.service.AuthService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;

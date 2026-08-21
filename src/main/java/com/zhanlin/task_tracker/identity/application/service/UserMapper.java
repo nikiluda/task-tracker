@@ -1,8 +1,8 @@
-package com.zhanlin.task_tracker.mapper;
+package com.zhanlin.task_tracker.identity.application.service;
 
-import com.zhanlin.task_tracker.dto.UserDTO.RegisterUserRequest;
+import com.zhanlin.task_tracker.identity.api.rest.dto.RegisterUserRequest;
 import com.zhanlin.task_tracker.dto.UserDTO.UserResponse;
-import com.zhanlin.task_tracker.entity.User;
+import com.zhanlin.task_tracker.identity.domain.User;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -5,8 +5,8 @@ import com.zhanlin.task_tracker.dto.TaskDTO.StatusRequest;
 import com.zhanlin.task_tracker.dto.TaskDTO.TaskRequest;
 import com.zhanlin.task_tracker.dto.TaskDTO.TaskResponse;
 import com.zhanlin.task_tracker.entity.TaskStatus;
-import com.zhanlin.task_tracker.security.service.CustomUserDetailService;
-import com.zhanlin.task_tracker.security.service.JWTService;
+import com.zhanlin.task_tracker.identity.infrastructure.security.CustomUserDetailService;
+import com.zhanlin.task_tracker.identity.infrastructure.security.JWTService;
 import com.zhanlin.task_tracker.service.TaskService;
 
 import org.junit.jupiter.api.Test;

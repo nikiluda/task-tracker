@@ -1,14 +1,15 @@
 package com.zhanlin.task_tracker.service;
 
-import com.zhanlin.task_tracker.dto.AuthAndLoginDTO.AuthResponse;
-import com.zhanlin.task_tracker.dto.AuthAndLoginDTO.LoginRequest;
-import com.zhanlin.task_tracker.dto.UserDTO.RegisterUserRequest;
-import com.zhanlin.task_tracker.entity.User;
+import com.zhanlin.task_tracker.identity.api.rest.dto.AuthResponse;
+import com.zhanlin.task_tracker.identity.api.rest.dto.LoginRequest;
+import com.zhanlin.task_tracker.identity.api.rest.dto.RegisterUserRequest;
+import com.zhanlin.task_tracker.identity.application.service.AuthServiceImpl;
+import com.zhanlin.task_tracker.identity.domain.User;
 import com.zhanlin.task_tracker.exception.PasswordMismatchException;
 import com.zhanlin.task_tracker.exception.UserAlreadyExistException;
-import com.zhanlin.task_tracker.mapper.UserMapper;
-import com.zhanlin.task_tracker.repository.UserRepository;
-import com.zhanlin.task_tracker.security.service.JWTService;
+import com.zhanlin.task_tracker.identity.application.service.UserMapper;
+import com.zhanlin.task_tracker.identity.infrastructure.persistence.UserRepository;
+import com.zhanlin.task_tracker.identity.infrastructure.security.JWTService;
 import com.zhanlin.task_tracker.security.user.CustomUserDetails;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

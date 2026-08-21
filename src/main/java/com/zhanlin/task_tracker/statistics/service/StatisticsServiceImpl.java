@@ -1,7 +1,7 @@
 package com.zhanlin.task_tracker.statistics.service;
 
 
-import com.zhanlin.task_tracker.entity.User;
+import com.zhanlin.task_tracker.identity.domain.User;
 import com.zhanlin.task_tracker.service.CurrentUserService;
 import com.zhanlin.task_tracker.statistics.api.response.CompletionStatistics;
 import com.zhanlin.task_tracker.statistics.api.response.StatisticsResponse;

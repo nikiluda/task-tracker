@@ -1,7 +1,7 @@
 package com.zhanlin.task_tracker.config;
 
 
-import com.zhanlin.task_tracker.security.JWTFilter;
+import com.zhanlin.task_tracker.identity.infrastructure.security.JWTFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

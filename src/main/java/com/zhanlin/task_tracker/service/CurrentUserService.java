@@ -1,6 +1,6 @@
 package com.zhanlin.task_tracker.service;
 
-import com.zhanlin.task_tracker.entity.User;
+import com.zhanlin.task_tracker.identity.domain.User;
 
 public interface CurrentUserService {
 

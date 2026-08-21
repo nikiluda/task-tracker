@@ -1,8 +1,5 @@
-package com.zhanlin.task_tracker.security;
+package com.zhanlin.task_tracker.identity.infrastructure.security;
 
-import com.zhanlin.task_tracker.security.service.CustomUserDetailService;
-import com.zhanlin.task_tracker.security.service.JWTService;
-import com.zhanlin.task_tracker.security.user.CustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

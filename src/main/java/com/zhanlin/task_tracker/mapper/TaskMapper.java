@@ -4,7 +4,7 @@ import com.zhanlin.task_tracker.dto.TaskDTO.TaskRequest;
 import com.zhanlin.task_tracker.dto.TaskDTO.TaskResponse;
 import com.zhanlin.task_tracker.entity.Task;
 import com.zhanlin.task_tracker.entity.TaskStatus;
-import com.zhanlin.task_tracker.entity.User;
+import com.zhanlin.task_tracker.identity.domain.User;
 import org.springframework.stereotype.Component;
 
 @Component

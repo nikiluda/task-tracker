@@ -1,4 +1,4 @@
-package com.zhanlin.task_tracker.dto.AuthAndLoginDTO;
+package com.zhanlin.task_tracker.identity.api.rest.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;

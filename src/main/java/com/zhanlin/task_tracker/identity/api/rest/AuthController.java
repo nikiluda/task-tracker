@@ -1,10 +1,10 @@
-package com.zhanlin.task_tracker.controller;
+package com.zhanlin.task_tracker.identity.api.rest;
 
 
-import com.zhanlin.task_tracker.dto.AuthAndLoginDTO.AuthResponse;
-import com.zhanlin.task_tracker.dto.AuthAndLoginDTO.LoginRequest;
-import com.zhanlin.task_tracker.dto.UserDTO.RegisterUserRequest;
-import com.zhanlin.task_tracker.service.AuthService;
+import com.zhanlin.task_tracker.identity.api.rest.dto.AuthResponse;
+import com.zhanlin.task_tracker.identity.api.rest.dto.LoginRequest;
+import com.zhanlin.task_tracker.identity.api.rest.dto.RegisterUserRequest;
+import com.zhanlin.task_tracker.identity.application.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

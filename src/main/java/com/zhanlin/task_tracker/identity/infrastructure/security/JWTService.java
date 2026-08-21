@@ -1,4 +1,4 @@
-package com.zhanlin.task_tracker.security.service;
+package com.zhanlin.task_tracker.identity.infrastructure.security;
 
 import com.zhanlin.task_tracker.security.user.CustomUserDetails;
 
